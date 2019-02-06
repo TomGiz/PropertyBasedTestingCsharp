@@ -21,19 +21,37 @@ namespace PropertyBasedTestingCsharp.Tests
             Assert.Equal(exp, sorted);
         }
 
+        [Fact]
+        public void Sorting_an_empty_array_results_in_an_empty_array() 
+        {
+            var @in = new int[] {};
+            var exp = new int[] {};
+
+            var sorted = _sorter.Sort(@in);
+
+            Assert.Equal(exp, sorted);
+        }
+
         [Property(MaxTest = 200)]
         public Property Sorting_an_array_preserves_array_length(int[] array)
         {
             return (_sorter.Sort(array).ToList().Count == array.Length).ToProperty();
         }
 
-        [Property]
+        [Property(Verbose=true)]
         public Property Sorting_twice_is_equivalent_to_Sorting_once(int[] array)
         {
-            return (
-                _sorter.Sort(array)
-                == 
-                _sorter.Sort(_sorter.Sort(array))
+            // return (
+            //     _sorter.Sort(array)
+            //     == 
+            //     _sorter.Sort(_sorter.Sort(array))
+            //     ).ToProperty();
+            // // "==" denotes referential equality, while we want structural equality
+
+             return (
+                _sorter.Sort(array).SequenceEqual(
+                                    _sorter.Sort(_sorter.Sort(array))
+                    )
                 ).ToProperty();
         }
     }

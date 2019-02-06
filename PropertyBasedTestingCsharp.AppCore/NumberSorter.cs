@@ -13,9 +13,7 @@ namespace PropertyBasedTestingCsharp.AppCore
     {
         public IList<int> Sort(IList<int> @in) 
         {
-            var @out = new List<int>(@in);
-            return @out.OrderBy(x=>x).ToList();
-            // return @in.OrderBy(x=>x);
+            return @in.OrderBy(x=>x).ToList();
         }
     }
 }
