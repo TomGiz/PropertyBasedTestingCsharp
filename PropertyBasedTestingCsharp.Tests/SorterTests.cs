@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using PropertyBasedTestingCsharp.AppCore;
 using Xunit;
 using FsCheck;
@@ -32,27 +33,47 @@ namespace PropertyBasedTestingCsharp.Tests
             Assert.Equal(exp, sorted);
         }
 
+        [Property]
+        public Property All_elements_are_sorted_after_sorting(int[] array)
+        {
+            var sorted = _sorter.Sort(array);
+            var property = true.ToProperty();
+
+            for (int i = 1; i < sorted.Count; i++)
+            {
+                property = property.And((sorted[i - 1] <= sorted[i]).ToProperty());
+            }
+
+            return property;
+        }
+
         [Property(MaxTest = 200)]
         public Property Sorting_an_array_preserves_array_length(int[] array)
         {
             return (_sorter.Sort(array).ToList().Count == array.Length).ToProperty();
         }
 
+        // [Property(Verbose=true)]
+        // public Property Sorting_twice_is_equivalent_to_Sorting_once(int[] array)
+        // {
+        //     return (
+        //         _sorter.Sort(array)
+        //         ==
+        //         _sorter.Sort(_sorter.Sort(array))
+        //         ).ToProperty();
+        // }
+
+        
         [Property(Verbose=true)]
         public Property Sorting_twice_is_equivalent_to_Sorting_once(int[] array)
         {
-            // return (
-            //     _sorter.Sort(array)
-            //     == 
-            //     _sorter.Sort(_sorter.Sort(array))
-            //     ).ToProperty();
-            // // "==" denotes referential equality, while we want structural equality
+           // !!!  "==" denotes referential equality, while we want structural equality
 
-             return (
-                _sorter.Sort(array).SequenceEqual(
-                                    _sorter.Sort(_sorter.Sort(array))
-                    )
-                ).ToProperty();
+           return (
+               _sorter.Sort(array).SequenceEqual(
+                   _sorter.Sort(_sorter.Sort(array))
+               )
+           ).ToProperty();
         }
     }
 }

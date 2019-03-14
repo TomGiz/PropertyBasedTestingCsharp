@@ -13,7 +13,7 @@ FsCheck
 
 # Things that need explaining
 
-* **shrinking**: a process that  allows FsCheck to work backwards through the series of random inputs it generated to determine what the minimal reproduction steps are for producing a test failure. This will come in handy once we start testing more complicated models.
+* **shrinking**: a process that  allows FsCheck to work backwards through the series of random inputs it generated to determine what the minimal reproduction steps are for producing a test failure, i.e. a minimal counter example. This will come in handy once we start testing more complicated models.
 
 # Things to show in slides
 * Romeu's tweet
